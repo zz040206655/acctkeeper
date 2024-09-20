@@ -1,0 +1,8 @@
+server:
+  port: ":5050"
+database:
+  user: "leonard"
+  password: "leonard_password"
+  host: "localhost"
+  port: "3306"
+  name: "leonard_db"
