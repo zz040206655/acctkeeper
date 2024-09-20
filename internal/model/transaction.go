@@ -27,5 +27,4 @@ type Transaction struct {
 	Amount    float64   `gorm:"not null"`
 	Type      string    `gorm:"size:50;not null"` // cash or bank
 	TxTime    time.Time `gorm:"not null"`
-	CreatedAt time.Time
 }

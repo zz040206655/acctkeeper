@@ -54,7 +54,7 @@ func ImportTransactions(txReqs []model.TransactionReq) (float64, error) {
 		return 0.0, errors.New("account not found")
 	}
 
-	newtxs := []model.Transaction{}
+	var balance float64
 	for _, r := range txReqs {
 		var tx model.Transaction
 
@@ -67,16 +67,21 @@ func ImportTransactions(txReqs []model.TransactionReq) (float64, error) {
 			return 0.0, err
 		}
 
-		account.Balance += tx.Amount
-		newtxs = append(newtxs, tx)
-	}
+		tx = model.Transaction{
+			AccountID: account.ID,
+			Amount:    r.Amount,
+			Type:      r.Type,
+			TxTime:    r.TxTime,
+		}
 
-	if len(newtxs) > 0 {
-		if err := utils.DB.Create(&newtxs).Error; err != nil {
+		balance += r.Amount
+		err = utils.DB.Create(&tx).Error
+		if err != nil {
 			return 0.0, err
 		}
 	}
 
+	account.Balance += balance
 	if err := utils.DB.Save(&account).Error; err != nil {
 		return 0.0, err
 	}

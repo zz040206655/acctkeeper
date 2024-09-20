@@ -32,7 +32,7 @@ func InitDB() {
 		log.Fatal(err)
 	}
 
-	DB.AutoMigrate(&model.Account{}, &model.Transaction{})
+	DB.AutoMigrate(&model.Account{}, &model.Transaction{}, &model.Report{})
 	DB.Model(&model.Transaction{}).AddUniqueIndex("account_id", "amount", "type", "tx_time")
 	fmt.Println("Success connecting to MySQL")
 }
